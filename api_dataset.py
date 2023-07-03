@@ -3,8 +3,7 @@ import openai
 from online_dataset import OnlineDataset
 import fileinput
 import re
-openai.organization = "org-Su2zqdZseoqdcfYsKnfG0EoH"
-openai.api_key = "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"
+
 
 
 
@@ -18,7 +17,7 @@ class API:
     url = "https://api.openai.com/v1/chat/completions"
     
 
-    def generate_chat_response(self, topic, length=432):
+    def generate_chat_response(self, topic, length=300):
         '''
         Take a topic as input and return a response from the GPT-3 model with corresonding length.
         '''
@@ -26,7 +25,7 @@ class API:
         modified_topic = topic.lower()
         headers = {
             "Content-Type": "application/json",
-            "Authorization": "Bearer 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"
+            "Authorization": "Bearer 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"
         }
         data = {
             "model": "gpt-3.5-turbo",
@@ -44,7 +43,7 @@ class API:
                 print(f"The topic {topic} failed to generate a response.")
                 
 
-    def generate_train_dataset_from_api(self, output_path, topic_title, length=432, num_topics= 286, num_training_examples=4):
+    def generate_train_dataset_from_api(self, output_path, topic_title, length=300, num_topics= 286, num_training_examples=4):
         '''
         Generate a training dataset of up to "k" topics of length "length" in topic_title by calling generate_chat_response() function. The number of training examples
         is specified by num_training_examples. Export the dataset to a csv file.
@@ -58,7 +57,7 @@ class API:
                  with open(output_path, 'a', newline='') as file:
                     if file.tell() == 0:  # check if file is empty
                         file.write("Training examples generated from the OpenAI API.\n")
-                    label = f"{k+183}_{i}"  # generate label for the kth *ith sample
+                    label = f"{k+1}_{i}"  # generate label for the kth *ith sample
                     try:
                         text = self.generate_chat_response(topic_title[k], length)
                     except ConnectionResetError: #to handle connection reset errors
@@ -93,8 +92,10 @@ class API:
         with open(input_path, 'r') as file:
             for line in file:
                 if "\\n" in line:
-                    lst.append(sample[5:])
+                    lst.append(sample)
                     sample = ""
+                elif "_" in line:
+                    sample += line[4:].lstrip()
                 else:
                     sample += line
         return lst
@@ -129,7 +130,10 @@ if __name__ == "__main__":
     topic_title = online_dataset.extract_topics('arg_search_framework/data/essay/train.json')
     lst_of_arguments = online_dataset.extract_argument('arg_search_framework/data/essay/train.json')
     api = API()
-    api.train_dataset_characteristics(api.convert_text_to_lst("new_train_dataset_api.txt"))
+    # api.ai_remover("new_train_dataset_api.txt", "new_train_dataset_api.txt", "As a language model designed to assist humans in their tasks, ")
+    lst = api.convert_text_to_lst("new_train_dataset_api.txt")
+    print(lst[100])
+    # api.train_dataset_characteristics(api.convert_text_to_lst("new_train_dataset_api.txt"))
     
     
     

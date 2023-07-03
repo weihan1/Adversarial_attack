@@ -7,7 +7,7 @@ parser = argparse.ArgumentParser(description='BERT model training')
 # Required parameters
 parser.add_argument('--model_type', type=str, default='bert-base-uncased',
                 help='The type of BERT model to use')
-parser.add_argument('--saved_model_dir', type=str, default='models/best_model.pt',
+parser.add_argument('--saved_model_dir', type=str, default='models/best_model2.pt',
                 help='The output directory where the model predictions and checkpoints will be written')
 
 # Other parameters
