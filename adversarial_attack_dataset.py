@@ -16,30 +16,6 @@ from textattack.constraints.semantics import WordEmbeddingDistance
 from textattack import Attack
 from textattack.datasets import Dataset
 import transformers
-
-class HuggingFaceSentimentAnalysisPipelineWrapper(ModelWrapper):
-    """Transformers sentiment analysis pipeline returns a list of responses,
-    like
-        [{'label': 'POSITIVE', 'score': 0.7817379832267761}]
-    We need to convert that to a format TextAttack understands, like
-        [[0.218262017, 0.7817379832267761]
-    """
-
-    def __init__(self, model):
-        self.model = model
-
-    def __call__(self, text_inputs):
-        raw_outputs = self.model(text_inputs)
-        outputs = []
-        for output in raw_outputs:
-            score = output["score"]
-            if output["label"] == "POSITIVE":
-                outputs.append([1 - score, score])
-            else:
-                outputs.append([score, 1 - score])
-        return np.array(outputs)
-
-
 if __name__ == "__main__":
     
     model = BertForSequenceClassification.from_pretrained('bert-base-uncased')

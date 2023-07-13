@@ -69,7 +69,7 @@ search_method = GreedyWordSwapWIR(wir_method="delete")
 # Construct the actual attack
 attack = Attack(goal_function, constraints, transformation, search_method)
 
-input_text = "I really enjoyed the new movie that came out last month."
+input_text = "Birds have captivated human imagination for centuries with their breathtaking beauty, melodious songs, and remarkable ability to soar through the skies. These fascinating creatures, belonging to the class Aves, have evolved and adapted to diverse habitats across the globe, exhibiting a myriad of colors, shapes, sizes, and behaviors. From the magnificent peacock displaying its vibrant plumage to the agile hummingbird darting between flowers, birds enrich our world with their presence and contribute to the intricate balance of ecosystems.One of the most remarkable features of birds is their ability to fly. Their wings, uniquely designed for this purpose, allow them to navigate the air with grace and precision. The power of flight grants birds unparalleled freedom, enabling them to travel vast distances in search of food, mates, and suitable nesting sites. From the majestic albatross, which can glide for thousands of miles over the open ocean, to the tiny migratory warblers crossing continents, birds showcase the true essence of aerial mastery."
 label = 1 #Positive
 attack_result = attack.attack(input_text, label)
 print(attack_result)
